@@ -50,5 +50,11 @@ namespace RESTcats.Controllers
         {
             return _repo.RemoveCat(id);
         }
+
+        [HttpOptions]
+        public void Options()
+        {
+        }
+
     }
 }
