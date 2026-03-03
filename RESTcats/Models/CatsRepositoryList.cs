@@ -1,4 +1,6 @@
-﻿namespace RESTcats.Models
+﻿using System.Collections.Generic;
+
+namespace RESTcats.Models
 {
     public class CatsRepositoryList : ICatsRepository
     {
@@ -15,9 +17,20 @@
             }
         }
 
-        public IEnumerable<Cat> GetAllCats()
+        public IEnumerable<Cat> GetAllCats(int? minimumweight, int? maximumweight)
         {
-            return cats.AsReadOnly();
+            IEnumerable<Cat> result = cats.AsReadOnly();
+
+            if (minimumweight != null)
+            {
+                result = result.Where(c => c.Weight >= minimumweight);
+            }
+            if (maximumweight != null)
+            {
+                result = result.Where(c => c.Weight <= maximumweight);
+            }
+
+            return result;
         }
         public Cat? GetCatById(int id)
         {

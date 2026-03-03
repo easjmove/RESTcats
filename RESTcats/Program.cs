@@ -11,8 +11,8 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: "AllowAll",
                               policy =>
                               {
-                                  policy.WithOrigins("http://zealand.dk")
-                                  .WithMethods("PUT", "GET")
+                                  policy.AllowAnyOrigin()
+                                  .AllowAnyMethod()
                                   .AllowAnyHeader();
                               });
 });

@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using RESTcats.Models;
+using System.Collections.Generic;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -17,17 +19,32 @@ namespace RESTcats.Controllers
         }
 
         // GET: api/<CatsController>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpGet]
-        public IEnumerable<Cat> Get()
+        public ActionResult<IEnumerable<Cat>> Get([FromQuery] int? minimumweight,
+            [FromQuery] int? maximumweight)
         {
-            return _repo.GetAllCats();
+            IEnumerable<Cat> result = _repo.GetAllCats(minimumweight, maximumweight);
+            if (result.IsNullOrEmpty())
+            {
+                return NoContent();
+            }
+            return Ok(result);
         }
 
         // GET api/<CatsController>/5
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}")]
-        public Cat? Get(int id)
+        public ActionResult<Cat> Get(int id)
         {
-            return _repo.GetCatById(id);
+            Cat? cat = _repo.GetCatById(id);
+            if (cat == null)
+            {
+                return NotFound();
+            }
+            return Ok(cat);
         }
 
         // POST api/<CatsController>
