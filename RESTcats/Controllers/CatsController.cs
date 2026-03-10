@@ -50,6 +50,7 @@ namespace RESTcats.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}")]
+        [Authorize(Roles = "User")]
         public ActionResult<Cat> Get(int id)
         {
             Cat? cat = _repo.GetCatById(id);
