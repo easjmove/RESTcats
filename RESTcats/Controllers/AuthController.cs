@@ -24,14 +24,19 @@ namespace RESTcats.Controllers
             // Here we use a simple hardcoded check:
             if (login.Username == "admin" && login.Password == "1234")
             {
-                var token = GenerateJwtToken(login.Username);
+                var token = GenerateJwtToken(login.Username, "Admin");
+                return Ok(new { token });
+            }
+            else if (login.Username == "user" && login.Password == "1234")
+            {
+                var token = GenerateJwtToken(login.Username, "User");
                 return Ok(new { token });
             }
 
             return Unauthorized("Invalid username or password.");
         }
 
-        private string GenerateJwtToken(string username)
+        private string GenerateJwtToken(string username, string role)
         {
             var jwtSettings = _config.GetSection("Jwt");
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]!));
@@ -43,7 +48,7 @@ namespace RESTcats.Controllers
                 new Claim(JwtRegisteredClaimNames.Sub, username),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(ClaimTypes.Name, username),
-                new Claim(ClaimTypes.Role, "Admin") // You can add roles here
+                new Claim(ClaimTypes.Role, role) // You can add roles here
             };
 
             var token = new JwtSecurityToken(

@@ -24,7 +24,7 @@ namespace RESTcats.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public ActionResult<IEnumerable<Cat>> Get(
             [FromQuery] int minimumweight,
             [FromQuery] int? maximumweight,
