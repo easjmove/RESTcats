@@ -25,9 +25,8 @@ namespace RESTcats.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet]
-        
         [Authorize(Roles = "Admin")]
-        public ActionResult<IEnumerable<Cat>> Get(
+        public ActionResult<IEnumerable<Cat>> GetAll(
             [FromQuery] int minimumweight,
             [FromQuery] int? maximumweight,
             [FromQuery] string? nameFilter)
